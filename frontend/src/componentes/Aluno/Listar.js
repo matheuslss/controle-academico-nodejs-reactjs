@@ -37,7 +37,7 @@ export default function ListarAlunos(props) {
 
   return (
     <>
-    <h3>Lista de alunos</h3>
+    <h3>Lista de Alunos</h3>
     <table className="table table-striped">
       <thead>
         <tr>

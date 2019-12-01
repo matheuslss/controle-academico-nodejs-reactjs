@@ -1,82 +1,38 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
+import React, {useState, useEffect} from 'react';
+import Main from '../template/Main/Main';
 
-// import ListarCursos from './Listar';
-// import CadastrarCursos from './Cadastrar';
+import ListarCursos from './Listar';
+import CadastrarCurso from './Cadastrar';
+import EditarCurso from './Editar';
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+export default function Alunos(props) {
 
-  return (
-    <Typography
-      component="div"
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      <Box p={3}>{children}</Box>
-    </Typography>
-  );
-}
+  const [view, setView] = useState("Listar");
+  const [curso, setCurso] = useState();
 
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
-};
+  useEffect(() => {
+    setView("Listar")
+  },[])
 
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: "theme.palette.background.paper",
-  },
-  tabColor: {
-    backgroundColor: "#778899"
+  function exibirCadastrarCurso() {
+    setView("Cadastrar");
   }
-}));
 
-export default function Cursos() {
-  const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  function exibirListarCurso() {
+    setView("Listar");
+  }
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  function exibirEditarCurso(curso) {
+    setCurso(curso);
+    setView("Editar");
+  }
 
   return (
-    <div className={classes.root}>
-      <AppBar position="static" className={classes.tabColor}>
-        <Tabs value={value} onChange={handleChange} aria-label="simple tabs example" >
-          <Tab label="Listar" {...a11yProps(0)} />
-          <Tab label="Cadastrar" {...a11yProps(1)} />
-          <Tab label="Editar" {...a11yProps(2)} />
-          <Tab label="Remover" {...a11yProps(3)} />
-        </Tabs>
-      </AppBar>
-      <TabPanel value={value} index={0}>
-        {/* <ListarALunos /> */}
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        {/* <CadastrarALunos /> */}
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        Item Three
-      </TabPanel>
-    </div>
+    <Main title="Cursos" >
+      {view === "Listar" ? <ListarCursos novoCurso={() => exibirCadastrarCurso()} 
+      editarCurso={exibirEditarCurso} /> : null}
+      {view === "Cadastrar" ? <CadastrarCurso listarCursos={() => exibirListarCurso()} /> : null}
+      {view === "Editar" ? <EditarCurso listarCursos={() => exibirListarCurso()} curso={curso}/> : null}
+    </Main>
   );
 }

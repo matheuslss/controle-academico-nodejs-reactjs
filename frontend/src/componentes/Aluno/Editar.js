@@ -1,29 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import FormControl from '@material-ui/core/FormControl';
-import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Select from '../Forms/Select';
 
 import { listarCursos, listarTurmasCurso } from '../Curso/cursoService';
 import { salvarAluno } from '../Aluno/alunoService';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    '& > *': {
-      display: 'flex',
-      width: 200
-    },
-    
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    width: 200,
-  }
-}));
-
 export default function CadastrarAluno(props) {
-  const classes = useStyles();
 
   const [cursos, setCursos] = useState([]);
   const [cursoSelecionado, setCursoSelecionado] = useState('');
@@ -111,21 +92,22 @@ export default function CadastrarAluno(props) {
   return (
     <>
     <h3>Editar aluno</h3>
-    <form className={classes.root} noValidate autoComplete="off">
-      <FormControl className={classes.formControl}>
-        <TextField id="standard-basic" label="Nome" onChange={onChangeNomeAluno} value={nomeAluno} />
-      </FormControl>
+    <form>
+      <div class="form-group">
+        <label for="nomeAluno">Nome do aluno</label>
+        <input 
+          type="email" 
+          class="form-control" 
+          id="nomeAluno" 
+          onChange={onChangeNomeAluno}
+          value={nomeAluno} />
+      </div>
       <Select id="cursos" valor={cursoSelecionado} label="Curso" opcoes={opcoesCursos} onChange={onChangeCurso} />
       <Select id="turmas" valor={turmaSelecionada} label="Turma" opcoes={opcoesTurmas} onChange={onChangeTurma} />
-      <FormControl className={classes.formControl}>
-        <Button variant="contained" color="primary" onClick={editar}>
-          Salvar
-        </Button>
-        <Button variant="contained" color="default" onClick={() => props.listarAlunos()}>
-          Cancelar
-        </Button>
-      </FormControl>
+      <button type="button" class="btn btn-secondary mr-2" onClick={() => props.listarAlunos()}>Cancelar</button>
+      <button type="submit" class="btn btn-primary" onClick={editar}>Salvar</button>
     </form>
     </>
   );
 }
+

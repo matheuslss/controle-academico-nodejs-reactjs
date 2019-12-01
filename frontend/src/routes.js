@@ -8,5 +8,5 @@ export default () =>
   <Switch>
     <Route exact path ='/cursos' component={Cursos} />
     <Route exact path ='/alunos' component={Alunos} />
-    <Redirect from='*' to='/' />
+    <Redirect from='*' to='/cursos' />
   </Switch>

@@ -8,15 +8,43 @@ module.exports = {
 
     return res.json(cursos)
   },
-  
+
   async store(req, res) {
-    const { nome } = req.body;
+    const { id, nome } = req.body;
 
-    const curso = await Curso.create({
-      nome,
+    let curso;
+
+    if(id){
+
+      curso = await Curso.update({
+        nome
+      }, 
+      {
+        returning: true, 
+        where: {
+          id: id
+        }
+      })
+    } else {
+
+      curso = await Curso.findOrCreate({
+        where:{
+          nome: nome
+        }
+      })
+    }
+    return res.json(curso);  
+  },
+
+  async destroy(req, res) {
+    const { id } = req.params;
+    
+    await Curso.destroy({
+      where: {
+        id: id
+      }
     })
-
-    return res.json(curso);
+    return res.send();
   },
 
   async listarTurmas(req, res) {
