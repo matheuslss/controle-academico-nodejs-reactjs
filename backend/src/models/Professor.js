@@ -5,6 +5,7 @@ class Professor extends Model {
     super.init({
       area_atuacao: DataTypes.STRING,
       titulacao: DataTypes.STRING,
+      nome: DataTypes.STRING,
     },
     { 
       sequelize: connection,
@@ -14,7 +15,6 @@ class Professor extends Model {
 
   static associate(models) {
     this.belongsToMany(models.Disciplina, { through: 'professor_disciplina', foreignKey: 'id_professor', as: 'disciplinas'});
-      this.belongsTo(models.Usuario, { foreignKey: 'id_usuario', as: 'usuarios'});
   }
 }
 

@@ -17,9 +17,12 @@ routes.get('/usuarios/:id_usuario', UsuarioController.show);
 //cursos
 routes.get('/cursos', CursoController.index);
 routes.post('/cursos', CursoController.store);
+routes.get('/cursos/:id_curso/turmas', CursoController.listarTurmas);
 //alunos
 routes.get('/alunos', AlunoController.index);
 routes.post('/alunos', AlunoController.store);
+routes.put('/alunos', AlunoController.store);
+routes.delete('/alunos/:id', AlunoController.destroy);
 //disciplinas
 routes.get('/disciplinas', DisciplinaController.index);
 routes.post('/disciplinas', DisciplinaController.store);

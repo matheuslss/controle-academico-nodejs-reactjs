@@ -6,7 +6,7 @@ module.exports = {
 
     const turma = await Turma.findAll({
       include: [{
-        association: "cursos"
+        association: "curso"
       }]
     });
 
@@ -22,5 +22,5 @@ module.exports = {
     })
 
     return res.json(turma);
-  }
+  },
 }

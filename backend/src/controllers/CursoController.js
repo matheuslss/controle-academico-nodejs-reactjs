@@ -1,4 +1,5 @@
 const Curso = require('../models/Curso');
+const Turma = require('../models/Turma');
 
 module.exports = {
 
@@ -16,5 +17,15 @@ module.exports = {
     })
 
     return res.json(curso);
+  },
+
+  async listarTurmas(req, res) {
+    const { id_curso } = req.params;
+    
+    const turmas = await Turma.findAll({
+      where: {id_curso}
+    })
+
+    return res.json(turmas);
   }
 }

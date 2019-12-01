@@ -14,8 +14,7 @@ class Turma extends Model {
   }
   
   static associate(models) {
-    this.belongsTo(models.Curso, { foreignKey: 'id_curso', as: 'cursos'});
-    // this.belongsTo(.Aluno), { foreignKey: 'id_usuario', as: 'alunos'}
+    this.belongsTo(models.Curso, { foreignKey: 'id_curso', as: 'curso'});
   }
 }
 

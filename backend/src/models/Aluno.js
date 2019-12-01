@@ -11,7 +11,7 @@ class Aluno extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.Turma, { foreignKey: 'id_turma', as: 'turmas'});
+    this.belongsTo(models.Turma, { foreignKey: 'id_turma', as: 'turma'});
     this.hasMany(models.Nota, { foreignKey: 'id_aluno', as: 'notas'});
   }
 }

@@ -9,9 +9,9 @@ class Curso extends Model {
     );
   }
 
-  // static associate(models) {
-  //   this.belongsTo(models.Usuario, { foreignKey: 'id_usuario', as: 'usuario'})
-  // }
+  static associate(models) {
+    this.hasMany(models.Turmas, { foreignKey: 'id_curso', as: 'turmas'})
+  }
 }
 
 module.exports = Curso;

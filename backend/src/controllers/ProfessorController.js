@@ -11,10 +11,10 @@ module.exports = {
   
   async store(req, res) {
 
-    const { id_usuario, area_atuacao, titulacao } = req.body;
+    const { nome, area_atuacao, titulacao } = req.body;
 
     const professor = await Professor.create({
-     id_usuario, area_atuacao, titulacao
+     nome, area_atuacao, titulacao
     })
 
     return res.json(professor);
