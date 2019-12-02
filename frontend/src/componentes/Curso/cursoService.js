@@ -14,5 +14,9 @@ export function salvarCurso(curso) {
 }
 
 export function excluirCurso(id) {
+  return axios.delete(`${base_url}/cursos/${id}`);
+}
+
+export function obterCurso(id) {
   return axios.get(`${base_url}/cursos/${id}`);
 }

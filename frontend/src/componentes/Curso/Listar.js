@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
-import { listarCursos, excluirCurso } from './cursoService';
+import { listarCursos, listarTurmasCurso, excluirCurso } from './cursoService';
 
 console.log(listarCursos);
 
@@ -43,6 +44,7 @@ export default function Listarcursos(props) {
         <tr>
           <th scope="col">ID do Curso</th>
           <th scope="col">Nome</th>
+          <th scope="col">Ações</th>
 
         </tr>
       </thead>
@@ -52,6 +54,7 @@ export default function Listarcursos(props) {
           <th scope="row">{curso.id}</th>
           <td>{curso.nome}</td>
           <td>
+            <Link to={`/cursos/${curso.id}/turmas`}>Listar Turmas</Link>
             <button className="btn" onClick={() => editarCurso(curso)}>
               Editar
             </button>

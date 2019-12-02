@@ -9,6 +9,14 @@ module.exports = {
     return res.json(cursos)
   },
 
+  async show(req, res) {
+    const { id_curso } = req.params;
+
+    const curso = await Curso.findByPk(id_curso);
+
+    return res.json(curso)
+  },
+
   async store(req, res) {
     const { id, nome } = req.body;
 
@@ -37,11 +45,11 @@ module.exports = {
   },
 
   async destroy(req, res) {
-    const { id } = req.params;
+    const { id_curso } = req.params;
     
     await Curso.destroy({
       where: {
-        id: id
+        id: id_curso
       }
     })
     return res.send();

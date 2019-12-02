@@ -5,9 +5,6 @@ import Footer from '../componentes/template/Footer/Footer';
 import Rotas from '../routes';
 import { HashRouter } from 'react-router-dom';
 
-// import Aluno from '../componentes/Aluno/Aluno';
-// import Curso from '../componentes/Curso/Curso';
-
 import './app.css';
 
 function App (props) {
@@ -16,7 +13,6 @@ function App (props) {
       <HashRouter>
         <Logo />
         <Nav />
-        {/* <Curso /> */}
         <Rotas />
         <Footer />
       </HashRouter>

@@ -16,10 +16,11 @@ routes.post('/usuarios', UsuarioController.store);
 routes.get('/usuarios/:id_usuario', UsuarioController.show);
 //cursos
 routes.get('/cursos', CursoController.index);
+routes.get('/cursos/:id_curso', CursoController.show);
 routes.post('/cursos', CursoController.store);
 routes.put('/cursos', CursoController.store);
 routes.get('/cursos/:id_curso/turmas', CursoController.listarTurmas);
-routes.get('/cursos/:id', CursoController.destroy);
+routes.delete('/cursos/:id_curso', CursoController.destroy);
 //alunos
 routes.get('/alunos', AlunoController.index);
 routes.post('/alunos', AlunoController.store);
