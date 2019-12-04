@@ -11,10 +11,8 @@ class Disciplina extends Model {
   }
 
   static associate(models) {
-    this.belongsToMany(models.Professor, { through: 'professor_disciplina', foreignKey: 'id_disciplina', as: 'professores'});
-  }
-  static associate(models) {
-    this.belongsTo(models.Curso, { foreignKey: 'id_curso', as: 'cursos'});
+    this.belongsTo(models.Professor, { foreignKey: 'id_professor', as: 'professor'});
+    this.belongsTo(models.Curso, { foreignKey: 'id_curso', as: 'curso'});
   }
 }
 

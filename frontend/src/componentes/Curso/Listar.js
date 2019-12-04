@@ -24,6 +24,8 @@ export default function Listarcursos(props) {
       .catch(error => {
         console.log(error);
       });
+    
+      console.log(cursos, "Teste")
   }
   function editarCurso(curso) {
     props.editarCurso(curso);
@@ -54,7 +56,11 @@ export default function Listarcursos(props) {
           <th scope="row">{curso.id}</th>
           <td>{curso.nome}</td>
           <td>
-            <Link to={`/cursos/${curso.id}/turmas`}>Listar Turmas</Link>
+            <Link to={`/cursos/${curso.id}/turmas`}>
+              <button className="btn">
+                Listar Turmas  
+              </button> 
+            </Link>
             <button className="btn" onClick={() => editarCurso(curso)}>
               Editar
             </button>

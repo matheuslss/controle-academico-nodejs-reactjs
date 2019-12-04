@@ -4,8 +4,11 @@ const Professor = require('../models/Professor');
 module.exports = {
 
   async index(req, res){
-
-    const disciplina = await Disciplina.findAll();
+    const disciplina = await Disciplina.findAll({
+      include:[{
+        association: 'professor'
+      }]
+    });
 
     return res.json(disciplina)
   },

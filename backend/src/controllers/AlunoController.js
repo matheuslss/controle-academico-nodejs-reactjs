@@ -5,7 +5,7 @@ module.exports = {
 
   async index(req, res){
 
-    const aluno = await Aluno.findAll( {
+    const aluno = await Aluno.findAll({
       include: [{
         association: 'turma',
         include: [{

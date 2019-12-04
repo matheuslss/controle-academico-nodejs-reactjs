@@ -15,12 +15,39 @@ module.exports = {
   
   async store(req, res) {
 
-    const { id_curso, ano, semestre } = req.body;
+    const { id, ano, semestre, id_curso } = req.body;
 
-    const turma = await Turma.create({
-      id_curso, ano, semestre
-    })
+    let turma;
+
+    if(id){
+
+      turma = await Turma.update({
+        ano, semestre
+      },{
+        returning: true,
+        where:{
+          id: id_curso
+        }
+      })
+    } else {
+        turma = await Turma.create({
+        id_curso, ano, semestre
+      })
+    }
 
     return res.json(turma);
   },
+
+  async destroy(req, res) {
+    console.log(req.body);
+    
+    const { id } = req.params;
+    
+    await Turma.destroy({
+      where: {
+        id: id
+      }
+    })
+    return res.send();
+  }
 }

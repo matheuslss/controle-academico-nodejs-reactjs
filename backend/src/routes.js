@@ -35,6 +35,8 @@ routes.post('/professores', ProfessorController.store);
 //turmas
 routes.get('/turmas', TurmaController.index);
 routes.post('/turmas', TurmaController.store);
+routes.put('/turmas', TurmaController.store);
+routes.delete('/turmas/:id', TurmaController.destroy);
 //notas
 routes.get('/notas', NotaController.index);
 routes.post('/notas', NotaController.store);

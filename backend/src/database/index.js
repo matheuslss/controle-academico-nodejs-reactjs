@@ -22,6 +22,7 @@ Nota.init(connection);
 Disciplina.associate(connection.models);
 Professor.associate(connection.models);
 Turma.associate(connection.models);
+Curso.associate(connection.models);
 Aluno.associate(connection.models);
 Nota.associate(connection.models);
 

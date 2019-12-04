@@ -1,18 +1,34 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Main from '../template/Main/Main';
 
 import { listarTurmasCurso, obterCurso } from '../Curso/cursoService';
+import { novaTurma, excluirTurma } from './turmaService';
 
 export default function ListarTurmas(props) {
 
   const [turmas, setTurmas] = useState([]);
   const [curso, setCurso] = useState({});
-  
-  useEffect(() => { 
-    const { id } = props.match.params; 
-    listar(id);
-    consultarCurso(id);
+  const [anoTurma, setAnoTurma] = useState();
+  const [semestreTurma, setSemestreTurma] = useState();
+
+  function obterCursoID() {
+    const { id } = props.match.params;
+    return id;
+  };
+
+  useEffect(() => {   
+    listar(obterCursoID());
+    consultarCurso(obterCursoID());
   },[])
+
+  function onChangeAno(event) {
+    setAnoTurma(event.target.value);
+  }
+
+  function onChangeSemestre(event) {
+    setSemestreTurma(event.target.value);
+  }
 
   function consultarCurso(id){
     console.log(id, "ID")
@@ -39,16 +55,29 @@ export default function ListarTurmas(props) {
         console.log(error);
       });
   }
-  function editarTurma(turma) {
-    props.editarTurma(turma);
+
+  function cadastrarTurma() {
+    const turma = {
+      id_curso: props.match.params.id,
+      semestre: semestreTurma,
+      ano: anoTurma
+    }
+
+    novaTurma(turma)
+    .then(resp => {
+      listar(obterCursoID())
+    })
+    .catch(error => {
+      console.log(error)
+    })
   }
 
-  // function removerTurma(id) {
-  //   excluirTurma(id)
-  //     .then(resp => {
-  //       listar();
-  //     });
-  // }
+  function removerTurma(id) {
+    excluirTurma(id)
+      .then(resp => {
+        listar(obterCursoID());
+      });
+  }
 
   return (
     <Main title={curso.nome}>
@@ -68,11 +97,8 @@ export default function ListarTurmas(props) {
           <td>{turma.ano}</td>
         <td>{turma.semestre}</td>
         <td>
-          <button className="btn" onClick={() => editarTurma(turma)}>
-            Editar
-          </button>
           <button className="btn"
-          // onClick={() => removerTurma(turma.id)}
+          onClick={() => removerTurma(turma.id)}
           >
             Excluir
           </button>
@@ -81,28 +107,52 @@ export default function ListarTurmas(props) {
         ))}
       </tbody>
     </table>
+      <Link to={"/cursos"}>
+    <button type="button" className="btn btn-secondary mr-2">
+        Voltar
+    </button>
+      </Link>
     <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#modalExemplo">
-        Abrir modal de demonstração
-      </button>
-      <div className="modal fade" id="modalExemplo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div className="modal-dialog" role="document">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="exampleModalLabel">Título do modal</h5>
-              <button type="button" className="close" data-dismiss="modal" aria-label="Fechar">
-                <span aria-hidden="true">&times;</span>
-              </button>
+      Cadastrar nova turma
+    </button>
+    <div className="modal fade" id="modalExemplo" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div className="modal-dialog" role="document">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title" id="exampleModalLabel">Nova turma</h5>
+            <button type="button" className="close" data-dismiss="modal" aria-label="Fechar">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div className="modal-body">
+            <div className="form-group">
+              <label htmlFor="semestre">Semestre</label>
+              <input 
+                type="text" 
+                className="form-control" 
+                id="semestre" 
+                onChange={onChangeSemestre}
+                value={semestreTurma || ""} />
             </div>
-            <div className="modal-body">
-              ...
+            <div className="form-group">
+              <label htmlFor="ano">Ano</label>
+              <input 
+                type="text" 
+                className="form-control" 
+                id="ano" 
+                onChange={onChangeAno}
+                value={anoTurma || ""} />
             </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-dismiss="modal">Fechar</button>
-              <button type="button" className="btn btn-primary">Salvar mudanças</button>
-            </div>
+          </div>
+          <div className="modal-footer">
+            <button type="button" className="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            <button type="button" className="btn btn-primary" data-dismiss="modal"
+              onClick={cadastrarTurma}
+            >Salvar mudanças</button>
           </div>
         </div>
       </div>
+    </div>
     </Main>
   );
 }

@@ -14,7 +14,8 @@ class Professor extends Model {
   }
 
   static associate(models) {
-    this.belongsToMany(models.Disciplina, { through: 'professor_disciplina', foreignKey: 'id_professor', as: 'disciplinas'});
+    this.hasOne(models.Disciplina, { foreignKey: 'id_professor', as: 'disciplina'});
+    this.belongsTo(models.Turma, { foreignKey: 'id_turma', as: 'turma'});
   }
 }
 

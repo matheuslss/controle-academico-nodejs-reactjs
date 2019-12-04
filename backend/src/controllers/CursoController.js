@@ -4,7 +4,11 @@ const Turma = require('../models/Turma');
 module.exports = {
 
   async index(req, res){
-    const cursos = await Curso.findAll();
+    const cursos = await Curso.findAll({
+      include:[{
+        association: 'turmas'
+      }]
+    });
 
     return res.json(cursos)
   },

@@ -4,19 +4,42 @@ module.exports = {
 
   async index(req, res){
 
-    const professor = await Professor.findAll();
+    const professor = await Professor.findAll({
+      include:[{
+        association: 'disciplina',
+        include:[{
+          association: 'curso',
+          include: [{
+            association: 'turmas'
+          }]
+        }]
+      }]
+    });
 
     return res.json(professor)
   },
   
   async store(req, res) {
 
-    const { nome, area_atuacao, titulacao } = req.body;
+    const { id, nome, area_atuacao, titulacao } = req.body;
 
-    const professor = await Professor.create({
-     nome, area_atuacao, titulacao
-    })
+    let professor;
 
+    if(id){
+      professor = await Professor.update({
+        nome, area_atuacao, titulacao
+      }, 
+      {
+        returning: true, 
+        where: {
+          id: id
+        }
+      })
+    } else {
+      professor = await Professor.create({
+        nome, area_atuacao, titulacao
+      })
+    }
     return res.json(professor);
   }
 }

@@ -9,6 +9,7 @@ function Nav (props) {
        <nav className="menu">
          <a href="#/cursos"> Cursos </a>
          <a href="#/alunos"> Alunos </a> 
+         <a href="#/professores"> Professores </a> 
        </nav>
     </aside>
   )

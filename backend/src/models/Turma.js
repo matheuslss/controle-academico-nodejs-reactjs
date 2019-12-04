@@ -9,8 +9,7 @@ class Turma extends Model {
     { 
       sequelize: connection,
     }       
-    );
-    
+    );    
   }
   
   static associate(models) {
