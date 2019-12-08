@@ -6,7 +6,7 @@ module.exports = {
   async index(req, res){
     const disciplina = await Disciplina.findAll({
       include:[{
-        association: 'professor'
+        association: 'curso'
       }]
     });
 
@@ -15,15 +15,48 @@ module.exports = {
   
   async store(req, res) {
 
-    const { nome, id_curso } = req.body;
+    const { id, nome, id_curso } = req.body;
 
-    console.log(req.body);
+    let disciplina;
 
-    const disciplina = await Disciplina.create({
-      nome,
-      id_curso,
-    })
+    if(id){
+
+      disciplina = await Disciplina.update({
+        ano, semestre
+      },{
+        returning: true,
+        where:{
+          id: id_curso
+        }
+      })
+    } else {
+        disciplina = await Disciplina.create({
+        id_curso, nome
+      })
+    }
 
     return res.json(disciplina);
+  },
+
+  async listarDisciplinas(req, res) {
+    const { id_curso } = req.params;
+    
+    const disciplinas = await Disciplina.findAll({
+      where: {id_curso}
+    })
+
+    return res.json(disciplinas);
+  },
+
+  async destroy(req, res) {
+    
+    const { id } = req.params;
+    
+    await Disciplina.destroy({
+      where: {
+        id: id
+      }
+    })
+    return res.send();
   }
 }

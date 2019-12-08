@@ -6,8 +6,12 @@ module.exports = {
   async index(req, res){
     const cursos = await Curso.findAll({
       include:[{
-        association: 'turmas'
-      }]
+        association: 'disciplinas',
+        association: 'turmas',
+      }],
+      // include:[{
+        
+      // }]
     });
 
     return res.json(cursos)

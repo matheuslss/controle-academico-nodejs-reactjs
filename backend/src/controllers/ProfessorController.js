@@ -1,20 +1,23 @@
 const Professor = require('../models/Professor');
+const Disciplina = require('../models/Disciplina');
 
 module.exports = {
 
   async index(req, res){
 
-    const professor = await Professor.findAll({
-      include:[{
-        association: 'disciplina',
-        include:[{
-          association: 'curso',
-          include: [{
-            association: 'turmas'
-          }]
-        }]
-      }]
-    });
+    const professor = await Professor.findAll();
+
+    // {
+    //   include:[{
+    //     association: 'disciplina',
+    //     include:[{
+    //       association: 'curso',
+    //       include: [{
+    //         association: 'turmas'
+    //       }]
+    //     }]
+    //   }]
+    // }
 
     return res.json(professor)
   },
@@ -37,9 +40,13 @@ module.exports = {
       })
     } else {
       professor = await Professor.create({
-        nome, area_atuacao, titulacao
+        nome, area_atuacao, titulacao,
+        include: [{
+          association: 'disciplina',
+        }]
       })
     }
     return res.json(professor);
   }
 }
+

@@ -10,8 +10,7 @@ class Turma extends Model {
       sequelize: connection,
     }       
     );    
-  }
-  
+  } 
   static associate(models) {
     this.belongsTo(models.Curso, { foreignKey: 'id_curso', as: 'curso'});
   }

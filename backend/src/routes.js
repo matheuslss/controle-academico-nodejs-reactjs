@@ -29,6 +29,8 @@ routes.delete('/alunos/:id', AlunoController.destroy);
 //disciplinas
 routes.get('/disciplinas', DisciplinaController.index);
 routes.post('/disciplinas', DisciplinaController.store);
+routes.delete('/disciplinas/:id', DisciplinaController.destroy);
+routes.get('/cursos/:id_curso/disciplinas', DisciplinaController.listarDisciplinas);
 //professores
 routes.get('/professores', ProfessorController.index);
 routes.post('/professores', ProfessorController.store);

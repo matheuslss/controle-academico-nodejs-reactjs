@@ -39,7 +39,6 @@ module.exports = {
   },
 
   async destroy(req, res) {
-    console.log(req.body);
     
     const { id } = req.params;
     
