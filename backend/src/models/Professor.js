@@ -12,9 +12,9 @@ class Professor extends Model {
       tableName: "professores"
     });
   }
-
   static associate(models) {
-    this.belongsTo(models.Disciplina, { foreignKey: 'id_professor', as: 'disciplina'});
+    this.belongsTo(models.Disciplina, { foreignKey: 'id_disciplina', as: 'disciplina'});
+    this.belongsTo(models.Turma, { foreignKey: 'id_turma', as: 'turma'});
   }
 }
 

@@ -34,6 +34,7 @@ routes.get('/cursos/:id_curso/disciplinas', DisciplinaController.listarDisciplin
 //professores
 routes.get('/professores', ProfessorController.index);
 routes.post('/professores', ProfessorController.store);
+routes.delete('/professores/:id', ProfessorController.destroy);
 //turmas
 routes.get('/turmas', TurmaController.index);
 routes.post('/turmas', TurmaController.store);

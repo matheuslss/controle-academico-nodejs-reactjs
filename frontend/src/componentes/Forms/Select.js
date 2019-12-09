@@ -5,15 +5,15 @@ export default function CustomSelect(props) {
   const { id, label, valor, opcoes, onChange } = props;
 
   return (
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <label class="input-group-text" for={id}>{label}</label>
+    <div className="input-group mb-3">
+      <div className="input-group-prepend">
+        <label className="input-group-text" htmlFor={id}>{label}</label>
       </div>
-      <select class="custom-select" 
+      <select className="custom-select" 
         id={id}
         value={valor}
         onChange={onChange} >
-        <option selected>Selecione...</option>
+        <option defaultValue='Selecione' >Selecione...</option>
         {opcoes.map((op, key) => (
           <option key={key} value={op.valor}>{op.label}</option>
         ))}

@@ -64,6 +64,9 @@ export default function ListarDisciplinas(props) {
     .catch(error => {
       console.log(error)
     })
+
+    setNomeDisciplina('');
+
   }
 
   function removerDisciplina(id) {

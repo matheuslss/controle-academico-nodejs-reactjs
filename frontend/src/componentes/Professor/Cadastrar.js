@@ -2,17 +2,20 @@ import React, { useState, useEffect } from 'react';
 import Select from '../Forms/Select';
 
 import { listarCursos, listarTurmasCurso } from '../Curso/cursoService';
+import { listarDisciplinasCurso} from '../Disciplina/disciplinaService';
 import { salvarProfessor} from '../Professor/professorService';
 
 export default function CadastrarAluno(props) {
 
+  const [nomeProfessor, setNomeProfessor] = useState();
+  const [atuacaoProfessor, setAtuacaoProfessor] = useState();
+  const [titulacaoProfessor, setTitulacaoProfessor] = useState();
   const [cursos, setCursos] = useState([]);
   const [cursoSelecionado, setCursoSelecionado] = useState();
   const [turmas, setTurmas] = useState([]);
   const [turmaSelecionada, setTurmaSelecionada] = useState();
-  const [nomeProfessor, setNomeProfessor] = useState();
-  const [atuacaoProfessor, setAtuacaoProfessor] = useState();
-  const [titulacaoProfessor, setTitulacaoProfessor] = useState();
+  const [disciplinas, setDisciplinas] = useState([]);
+  const [disciplinaSelecionada, setDisciplinaSelecionada] = useState();
   
   useEffect(() => { 
     listarCursos()
@@ -28,7 +31,6 @@ export default function CadastrarAluno(props) {
 
   useEffect(() => { 
         const resp = listarTurmasCurso(cursoSelecionado);
-        console.log(resp, "TURMAS")
 
         resp.then(resultado => {
           if(resultado.status === 200) {
@@ -36,8 +38,20 @@ export default function CadastrarAluno(props) {
           }
         }).catch(error => {
           console.log(error)
-        })
-    
+        })   
+  },[cursoSelecionado])
+  
+  useEffect(() => { 
+        const resp = listarDisciplinasCurso(cursoSelecionado);
+        console.log(resp, "Disciplinas")
+
+        resp.then(resultado => {
+          if(resultado.status === 200) {
+            setDisciplinas(resultado.data || []);
+          }
+        }).catch(error => {
+          console.log(error)
+        })   
   },[cursoSelecionado])
 
   function onChangeCurso(event) {
@@ -46,6 +60,10 @@ export default function CadastrarAluno(props) {
 
   function onChangeTurma(event) {
     setTurmaSelecionada(event.target.value);
+  }
+
+  function onChangeDisciplina(event) {
+    setDisciplinaSelecionada(event.target.value);
   }
 
   function onChangeNomeProfessor(event) {
@@ -65,8 +83,10 @@ export default function CadastrarAluno(props) {
 
     const novoProfessor = {
       nome: nomeProfessor,
-      data_matricula: new Date().toISOString(),
-      id_turma: turmaSelecionada
+      area_atuacao: atuacaoProfessor,
+      titulacao: titulacaoProfessor,
+      id_turma: turmaSelecionada,
+      id_disciplina: disciplinaSelecionada
     }
 
     salvarProfessor(novoProfessor)
@@ -76,21 +96,22 @@ export default function CadastrarAluno(props) {
       .catch(error => {
         console.log(error)
       })
-    }
+  }
 
-  const opcoesCursos = cursos.map(curso => (
-    {
-      label: curso.nome,
-      valor: curso.id
-    }
-  ))
+  const opcoesCursos = cursos.map(curso => ({
+    label: curso.nome,
+    valor: curso.id
+  }))
 
-  const opcoesTurmas = turmas.map(turma => (
-    {
-      label: `${turma.ano}.${turma.semestre}`,
-      valor: turma.id
-    }
-  ))
+  const opcoesTurmas = turmas.map(turma => ({
+    label: `${turma.ano}.${turma.semestre}`,
+    valor: turma.id
+  }))
+
+  const opcoesDisciplinas = disciplinas.map(disciplina => ({
+    label: disciplina.nome,
+    valor: disciplina.id
+  }))
 
   return (
     <form>
@@ -125,6 +146,7 @@ export default function CadastrarAluno(props) {
       </div>
       <Select id="cursos" valor={cursoSelecionado} label="Curso" opcoes={opcoesCursos} onChange={onChangeCurso} />
       <Select id="turmas" valor={turmaSelecionada} label="Turma" opcoes={opcoesTurmas} onChange={onChangeTurma} />
+      <Select id="disciplinas" valor={disciplinaSelecionada} label="Disciplina" opcoes={opcoesDisciplinas} onChange={onChangeDisciplina} />
       <button type="button" className="btn btn-secondary mr-2" onClick={() => props.listarProfessores()}>Cancelar</button>
       <button type="submit" className="btn btn-primary" onClick={cadastrar}>Cadastrar</button>
     </form>

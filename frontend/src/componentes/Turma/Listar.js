@@ -70,6 +70,9 @@ export default function ListarTurmas(props) {
     .catch(error => {
       console.log(error)
     })
+
+    setAnoTurma('');
+    setSemestreTurma('');
   }
 
   function removerTurma(id) {

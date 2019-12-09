@@ -2,15 +2,20 @@ import React, { useState, useEffect } from 'react';
 import Select from '../Forms/Select';
 
 import { listarCursos, listarTurmasCurso } from '../Curso/cursoService';
-import { salvarAluno } from '../Aluno/alunoService';
+import { listarDisciplinasCurso } from '../Disciplina/disciplinaService';
+import { salvarProfessor } from './professorService';
 
-export default function CadastrarAluno(props) {
+export default function CadastrarProfessor(props) {
 
+  const [nomeProfessor, setNomeProfessor] = useState();
+  const [atuacaoProfessor, setAtuacaoProfessor] = useState();
+  const [titulacaoProfessor, setTitulacaoProfessor] = useState();
   const [cursos, setCursos] = useState([]);
   const [cursoSelecionado, setCursoSelecionado] = useState('');
-  const [nomeAluno, setNomeAluno] = useState();
   const [turmas, setTurmas] = useState([]);
   const [turmaSelecionada, setTurmaSelecionada] = useState('');
+  const [disciplinas, setDisciplinas] = useState([]);
+  const [disciplinaSelecionada, setDisciplinaSelecionada] = useState();
   
   useEffect(() => { 
     listarCursos()
@@ -22,16 +27,19 @@ export default function CadastrarAluno(props) {
       .catch(error => {
         console.log(error)
       })
-      console.log(props.aluno, "Aluno");
-      setNomeAluno(props.aluno.nome);   
-      setCursoSelecionado(props.aluno.turma.id_curso);   
-      setTurmaSelecionada(props.aluno.turma.id);   
+
+      console.log(props.professor, "Professor")
+
+      setNomeProfessor(props.professor.nome);   
+      setTitulacaoProfessor(props.professor.area_atuacao);   
+      setAtuacaoProfessor(props.professor.titulacao);   
+      setCursoSelecionado(props.professor.turma.id_curso);   
+      setTurmaSelecionada(props.professor.turma.id);   
+      setDisciplinaSelecionada(props.professor.disciplina.id);   
   },[])
 
   useEffect(() => { 
-    console.log(cursoSelecionado, "Curso Selecionado");
     if(cursoSelecionado){
-      
       const resp = listarTurmasCurso(cursoSelecionado);
       resp.then(resultado => {
         if(resultado.status === 200) {
@@ -43,6 +51,20 @@ export default function CadastrarAluno(props) {
     }
   },[cursoSelecionado])
 
+  useEffect(() => { 
+    if(cursoSelecionado){
+    const resp = listarDisciplinasCurso(cursoSelecionado);
+
+    resp.then(resultado => {
+      if(resultado.status === 200) {
+        setDisciplinas(resultado.data || []);
+      }
+    }).catch(error => {
+      console.log(error)
+    })   
+  }
+},[cursoSelecionado])
+
 
   function onChangeCurso(event) {
     setCursoSelecionado(event.target.value);
@@ -52,60 +74,97 @@ export default function CadastrarAluno(props) {
     setTurmaSelecionada(event.target.value);
   }
 
-  function onChangeNomeAluno(event) {
-    setNomeAluno(event.target.value);
+  function onChangeDisciplina(event) {
+    setDisciplinaSelecionada(event.target.value);
+  }
+  
+  function onChangeNomeProfessor(event) {
+    setNomeProfessor(event.target.value);
+  }
+
+  function onChangeTitulacaoProfessor(event) {
+    setTitulacaoProfessor(event.target.value);
+  }
+
+  function onChangeAtuacaoProfessor(event) {
+    setAtuacaoProfessor(event.target.value);
   }
 
   function editar(event) {
     event.preventDefault();
 
-    const novoAluno = {
-      id: props.aluno.id,
-      nome: nomeAluno,
-      data_matricula: props.aluno.data_matricula,
-      id_turma: turmaSelecionada
+    const novoProfessor = {
+      id: props.professor.id,
+      nome: nomeProfessor,
+      titulacao: titulacaoProfessor,
+      area_atuacao: atuacaoProfessor,
+      id_turma: turmaSelecionada,
+      id_disciplina: disciplinaSelecionada,
     }
 
-    salvarAluno(novoAluno)
+    salvarProfessor(novoProfessor)
       .then(resp => {
-        props.listarAlunos()
+        props.listarProfessores()
       })
       .catch(error => {
         console.log(error)
       })
     }
 
-  const opcoesCursos = cursos.map(curso => (
-    {
-      label: curso.nome,
-      valor: curso.id
-    }
-  ))
+  const opcoesCursos = cursos.map(curso => ({
+    label: curso.nome,
+    valor: curso.id
+  }))
 
-  const opcoesTurmas = turmas.map(turma => (
-    {
-      label: `${turma.ano}.${turma.semestre}`,
-      valor: turma.id
-    }
-  ))
+  const opcoesTurmas = turmas.map(turma => ({
+    label: `${turma.ano}.${turma.semestre}`,
+    valor: turma.id
+  }))
+
+  const opcoesDisciplinas = disciplinas.map(disciplina => ({
+    label: disciplina.nome,
+    valor: disciplina.id
+  }))
 
   return (
     <>
+    {console.log(cursoSelecionado, "Curso")}
     <h3>Editar aluno</h3>
     <form>
-      <div class="form-group">
-        <label for="nomeAluno">Nome do aluno</label>
+    <div className="form-group">
+        <label htmlFor="nomeAluno">Nome do Professor</label>
         <input 
-          type="email" 
-          class="form-control" 
-          id="nomeAluno" 
-          onChange={onChangeNomeAluno}
-          value={nomeAluno} />
+          type="text" 
+          className="form-control" 
+          id="nomeProfessor" 
+          onChange={onChangeNomeProfessor}
+          value={nomeProfessor || ''} />
+      </div>
+      <div className="form-group">
+        <label htmlFor="atuacaoProfessor">Área de Atuação</label>
+        <input 
+          type="text" 
+          className="form-control" 
+          id="atuacaoProfessor" 
+          onChange={onChangeAtuacaoProfessor}
+          value={atuacaoProfessor || ''} 
+          />
+      </div>
+      <div className="form-group">
+        <label htmlFor="titulacaoProfessor">Titulação</label>
+        <input 
+          type="text" 
+          className="form-control" 
+          id="titulacaoProfessor" 
+          onChange={onChangeTitulacaoProfessor}
+          value={titulacaoProfessor || ''}
+          />
       </div>
       <Select id="cursos" valor={cursoSelecionado} label="Curso" opcoes={opcoesCursos} onChange={onChangeCurso} />
       <Select id="turmas" valor={turmaSelecionada} label="Turma" opcoes={opcoesTurmas} onChange={onChangeTurma} />
-      <button type="button" class="btn btn-secondary mr-2" onClick={() => props.listarAlunos()}>Cancelar</button>
-      <button type="submit" class="btn btn-primary" onClick={editar}>Salvar</button>
+      <Select id="disciplinas" valor={disciplinaSelecionada} label="Turma" opcoes={opcoesDisciplinas} onChange={onChangeDisciplina} />
+      <button type="button" className="btn btn-secondary mr-2" onClick={() => props.listarProfessores()}>Cancelar</button>
+      <button type="submit" className="btn btn-primary" onClick={editar}>Salvar</button>
     </form>
     </>
   );

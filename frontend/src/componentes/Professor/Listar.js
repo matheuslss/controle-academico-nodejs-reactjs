@@ -54,7 +54,7 @@ export default function ListarProfessores(props) {
           <td>{professor.nome}</td>
           <td>{professor.area_atuacao}</td>
           <td>{professor.titulacao}</td>
-          <td>{professor.disciplina.nome}</td>
+          <td>{professor.disciplina.nome || ''}</td>
           <td>
             <button className="btn" onClick={() => editarProfessor(professor)}>
               Editar
